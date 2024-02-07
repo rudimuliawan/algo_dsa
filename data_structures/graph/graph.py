@@ -4,10 +4,9 @@ class Graph:
     def construct_from(cls, file):
         with open(file, "r") as f:
             vertices = int(f.readline())
-            edges = int(f.readline())
+            _ = int(f.readline())
 
             graph = Graph(vertices)
-            graph.edges = edges
 
             for line in f.readlines():
                 v, w, = [int(i) for i in line.split()]
@@ -24,6 +23,7 @@ class Graph:
     def add_edge(self, v, w):
         self.adjacents[v].append(w)
         self.adjacents[w].append(v)
+        self.edges += 1
 
     def degree(self, vertex):
         return len(self.adjacents[vertex])

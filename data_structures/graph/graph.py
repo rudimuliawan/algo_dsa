@@ -1,11 +1,24 @@
 class Graph:
 
-    def __init__(self, num_of_vertices, num_of_edges):
-        self.num_of_vertices = num_of_vertices
-        self.num_of_edges = num_of_edges
+    @classmethod
+    def construct_from(cls, file):
+        with open(file, "r") as f:
+            vertices = int(f.readline())
+            edges = int(f.readline())
+
+            graph = Graph(vertices)
+            graph.edges = edges
+
+            for line in f.readlines():
+                v, w, = [int(i) for i in line.split()]
+                graph.add_edge(v, w)
+
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.edges = 0
         self.adjacents = []
 
-        for i in range(self.num_of_vertices):
+        for i in range(self.vertices):
             self.adjacents.append([])
 
     def add_edge(self, v, w):
@@ -17,7 +30,7 @@ class Graph:
 
     def max_degree(self):
         max_degree_ = 0
-        for vertex in range(self.num_of_vertices):
+        for vertex in range(self.vertices):
             degree = self.degree(vertex)
             if degree > max_degree_:
                 max_degree_ = degree
@@ -25,11 +38,11 @@ class Graph:
         return max_degree_
 
     def average_degree(self):
-        return 2.0 * self.num_of_edges / self.num_of_vertices
+        return 2.0 * self.edges / self.vertices
 
     def num_of_self_loop(self):
         count = 0
-        for vertex in range(self.num_of_vertices):
+        for vertex in range(self.vertices):
             for connection in self.adjacents[vertex]:
                 if vertex == connection:
                     count += 1
@@ -37,8 +50,8 @@ class Graph:
         return count
 
     def to_string(self):
-        s = f"{self.num_of_vertices} vertices, {self.num_of_edges} edges\n"
-        for vertex in range(self.num_of_vertices):
+        s = f"{self.vertices} vertices, {self.edges} edges\n"
+        for vertex in range(self.vertices):
             s += f"vertex-{vertex} : [" + ", ".join(self.adjacents[vertex]) + "]\n"
 
         return s

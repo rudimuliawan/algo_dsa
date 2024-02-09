@@ -1,5 +1,5 @@
-import unittest
 from algorithm.sorting import insertion_sort, selection_sort
+import unittest
 
 
 def is_sorted(data):
